@@ -2,5 +2,18 @@
   "name": "quick-review",
   "version": "0.1.0",
   "description": "Auto-triggers a quick code review after git commits",
-  "hooks": "../hooks/hooks.json"
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-bash-tool.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

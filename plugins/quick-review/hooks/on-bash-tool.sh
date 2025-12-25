@@ -1,8 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
+# Debug: log that hook was called
+echo "$(date): Hook called" >> /tmp/hook-debug.log
+
 # Read JSON input from stdin
 input=$(cat)
+echo "$(date): Input received: $input" >> /tmp/hook-debug.log
 
 # Extract the command that was run
 command=$(echo "$input" | jq -r '.tool_input.command // ""')
