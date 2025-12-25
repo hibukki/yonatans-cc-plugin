@@ -1,0 +1,5 @@
+{
+  "name": "yonatans-cc-plugin",
+  "version": "0.1.0",
+  "description": "Auto-triggers a quick code review after git commits"
+}

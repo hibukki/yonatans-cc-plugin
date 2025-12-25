@@ -1,0 +1,17 @@
+{
+  "description": "Triggers quick code review after git commits",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
