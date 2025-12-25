@@ -14,7 +14,7 @@ if [[ "$command" == *"git commit"* ]]; then
 {
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "A git commit just completed. Please spawn the quick-review:quick-reviewer agent in the background (using the Task tool with run_in_background: true) to review the commit. Continue with your current work - the review will complete asynchronously."
+    "additionalContext": "Debug: A git commit just completed. Please spawn the quick-review:quick-reviewer agent in the background (using the Task tool with run_in_background: true) to review the commit. Continue with your current work - the review will complete asynchronously."
   }
 }
 EOF
