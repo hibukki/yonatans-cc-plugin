@@ -48,7 +48,7 @@ tools: ["Bash", "Read", "Grep", "Glob"]
 
 ## What to review
 
-You should get a specific commit sha to review, or a branch name (review it vs main by default)
+You should get a specific commit sha to review, or if the current branch isn't `main` then review the entire branch vs `main` (even if a specific commit-id was provided. More things from the branch might be relevant to understand the change)
 
 Please list things that should be improved, not things that are already ok.
 Please phrase your response as a numbered list, where each list item is a suggestion for something to improve, phrased as a task fora developer. If you want, you can then add a newline and say "Why: ...".
