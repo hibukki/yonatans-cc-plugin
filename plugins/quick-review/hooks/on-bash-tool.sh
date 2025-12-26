@@ -4,6 +4,12 @@ set -euo pipefail
 LOG="/tmp/hook-debug.log"
 REVIEW_DIR="/tmp/claude-reviews"
 
+# Require jq
+if ! command -v jq &>/dev/null; then
+  echo "Error: jq is required but not installed. Install with: brew install jq" >&2
+  exit 1
+fi
+
 # Ensure review directory exists
 mkdir -p "$REVIEW_DIR"
 
@@ -21,7 +27,7 @@ if [[ -d "$REVIEW_DIR" ]]; then
     commit_sha="${filename#review-}"
     commit_sha="${commit_sha%.txt}"
 
-    review_content=$(cat "$review_file" 2>/dev/null || echo "Error reading review")
+    review_content=$(cat "$review_file")
     inject_output="${inject_output}
 
 === Review ready for commit ${commit_sha}. Reminder: These are only suggestions, you can pick what to do. Default prioritization: Fix things in-scope even if low-severity ===
@@ -41,7 +47,8 @@ spawned_msg=""
 
 if [[ "$command" == *"git commit"* ]]; then
   # Extract commit SHA from output like "[main abc1234] commit message"
-  new_commit_sha=$(echo "$stdout" | grep -oE '\[[a-zA-Z0-9_/-]+ [a-f0-9]+\]' | grep -oE '[a-f0-9]{7,}' | head -1)
+  # Use || true to handle case where grep doesn't match (no commit in output)
+  new_commit_sha=$(echo "$stdout" | grep -oE '\[[a-zA-Z0-9_/-]+ [a-f0-9]+\]' | grep -oE '[a-f0-9]{7,}' | head -1 || true)
 
   if [[ -n "$new_commit_sha" ]]; then
     echo "$(date): Detected commit $new_commit_sha, spawning background review" >> "$LOG"
