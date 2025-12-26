@@ -61,11 +61,10 @@ if [[ "$command" == *"git commit"* ]]; then
   if [[ -n "$new_commit_sha" ]]; then
     echo "$(date): Detected commit $new_commit_sha, spawning background review" >> "$LOG"
 
-    # Spawn review using the quick-reviewer agent with read-only permissions
+    # Spawn review using the quick-reviewer agent
     (
       claude -p "Review commit $new_commit_sha" \
         --agent quick-reviewer \
-        --permission-mode plan \
         2>>"$LOG" \
         > "$REVIEW_DIR/review-$new_commit_sha.tmp"
 
