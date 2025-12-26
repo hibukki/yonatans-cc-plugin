@@ -12,15 +12,18 @@ fi
 # Read JSON input from stdin
 input=$(cat)
 
-# Namespace reviews by workspace (cwd) to avoid cross-contamination
-cwd=$(echo "$input" | jq -r '.cwd // ""')
-cwd_hash=$(echo "$cwd" | md5sum | cut -c1-8)
-REVIEW_DIR="/tmp/claude-reviews-${cwd_hash}"
+# Namespace reviews by session ID to avoid cross-contamination
+session_id=$(echo "$input" | jq -r '.session_id')
+if [[ -z "$session_id" || "$session_id" == "null" ]]; then
+  echo "Error: session_id not found in hook input" >&2
+  exit 1
+fi
+REVIEW_DIR="/tmp/claude-reviews-${session_id}"
 
 # Ensure review directory exists
 mkdir -p "$REVIEW_DIR"
 
-echo "$(date): PostToolUse hook called (workspace: $cwd_hash)" >> "$LOG"
+echo "$(date): PostToolUse hook called (session: $session_id)" >> "$LOG"
 
 # --- PART 1: Check for and inject any completed reviews ---
 inject_output=""
