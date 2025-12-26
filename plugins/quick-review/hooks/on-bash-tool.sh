@@ -25,7 +25,7 @@ mkdir -p "$REVIEW_DIR"
 
 echo "$(date): PostToolUse hook called (session: $session_id)" >> "$LOG"
 
-# --- PART 1: Check for and inject any completed reviews ---
+# --- Check for and inject any completed reviews ---
 inject_output=""
 if [[ -d "$REVIEW_DIR" ]]; then
   for review_file in "$REVIEW_DIR"/review-*.txt; do
@@ -48,7 +48,7 @@ ${review_content}
   done
 fi
 
-# --- PART 2: If this was a git commit, spawn a new review ---
+# --- If this was a git commit, spawn a new review ---
 command=$(echo "$input" | jq -r '.tool_input.command // ""')
 stdout=$(echo "$input" | jq -r '.tool_response.stdout // ""')
 spawned_msg=""
@@ -76,7 +76,7 @@ if [[ "$command" == *"git commit"* ]]; then
   fi
 fi
 
-# --- PART 3: Output additionalContext (always output something for debugging) ---
+# --- Output additionalContext (always output something for debugging) ---
 debug_msg="[quick-review hook ran]"
 combined="${inject_output}${spawned_msg}${debug_msg}"
 escaped=$(echo "$combined" | jq -Rs .)
