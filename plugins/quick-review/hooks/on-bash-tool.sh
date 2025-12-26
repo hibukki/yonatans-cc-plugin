@@ -77,7 +77,8 @@ if [[ "$command" == *"git commit"* ]]; then
 fi
 
 # --- Output additionalContext (always output something for debugging) ---
-debug_msg="[quick-review hook ran]"
+# debug_msg="[quick-review hook ran]"
+debug_msg=""
 combined="${inject_output}${spawned_msg}${debug_msg}"
 escaped=$(echo "$combined" | jq -Rs .)
 
