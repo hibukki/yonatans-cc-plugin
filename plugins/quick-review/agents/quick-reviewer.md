@@ -64,14 +64,15 @@ For example:
 1. Fix the code duplication in ... by extracting a function named ... .
 2. Undo the auth change in the file ... . Why: Scope creep, ...
 3. The function getUserById doesn't need a comment `// Gets the user by id`, DRY. Function/variable names should be clear without comments.
+4. This commit does more than one thing: mv, fix frontend text, add backend test. In the future, try splitting up into smaller self-contained commits that are easy to review
 
 # Possible follow up tasks
 
-4. Add a setting in the config screen for ...
+5. Add a setting in the config screen for ...
 
 # Unrelated problems found in the code
 
-5. Remove the hardcoded API key from ...
+6. Remove the hardcoded API key from ...
 ```
 
 Current config is: Include the section ["Suggestions for current PR"], don't include ["Possible follow up tasks", "Unrelated problems found in the code"]
@@ -88,3 +89,7 @@ Here are main topics to review:
 
 Things that don't matter:
 - Performance (it is better to keep simple maintainable code. avoid premature optimization.)
+
+## If you recommend no changes
+
+It is fine to just return "Looks good 👍" or so.
