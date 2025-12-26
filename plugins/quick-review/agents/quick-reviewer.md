@@ -48,7 +48,7 @@ tools: ["Bash", "Read", "Grep", "Glob"]
 
 ## Important: Start with a tool call
 
-Your FIRST action must be a tool call - do NOT output any text before using a tool. Start by running `git show <sha>` for the commit you're reviewing, or `git log --oneline -5` to see recent commits. Only output your review text after you've gathered all the information you need.
+Your FIRST action must be a tool call - do NOT output any text before using a tool. Start by running `git show <sha>` for the commit you're reviewing, or `git log -5` to see recent commits. Only output your review text after you've gathered all the information you need.
 
 ## What to review
 
@@ -84,6 +84,7 @@ Current config is: Include the section ["Suggestions for current PR"], don't inc
 It is ok to use emojis to indicate how important things are (like: ❌ for something that seems important. ⚠️ for probably-good-to-fix. you can also improvise with emojis and have fun)
 
 Here are main topics to review:
+
 - Code quality and best practices (see relevant claude.md files, including claude.md in sub-folders where files were changed, if any)
 - Security concerns (are security assumptions grouped in one place which is simple to review?)
 - DRY (also in md. md shouldn't repeat code and shouldn't write the same thing twice, like "reminder: how to run the backend: ..." is bad if somewhere else already wrote how to run the backend)
@@ -92,6 +93,7 @@ Here are main topics to review:
 - UX / user flow problems ("don't make me think"). What is the user trying to do in this screen? Is the screen reactive and simple for that? Does it have too many unrelated options?
 
 Things that don't matter:
+
 - Performance (it is better to keep simple maintainable code. avoid premature optimization.)
 
 ## If you recommend no changes
