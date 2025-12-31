@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.23",
+  "version": "0.5.24",
   "description": "Auto-triggers a quick code review after git commits",
   "commands": "./commands/",
   "skills": "./skills/",
@@ -16,6 +16,15 @@
       }
     ],
     "PostToolUse": [
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"Tip: If WebFetch is filtering out info you want, you can download the entire webpage and launch a sub task to get info from that downloaded file.\"}'"
+          }
+        ]
+      },
       {
         "matcher": "*",
         "hooks": [
