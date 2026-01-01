@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.24",
+  "version": "0.5.25",
   "description": "Auto-triggers a quick code review after git commits",
   "commands": "./commands/",
   "skills": "./skills/",
@@ -11,6 +11,10 @@
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/check-hookify.sh"
           }
         ]
       }
