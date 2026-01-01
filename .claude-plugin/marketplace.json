@@ -12,6 +12,11 @@
       "name": "quick-review",
       "source": "./plugins/quick-review",
       "description": "Auto-triggers a quick code review after git commits"
+    },
+    {
+      "name": "hookify",
+      "source": "./external/claude-code/plugins/hookify",
+      "description": "Create hooks using markdown rules with YAML frontmatter"
     }
   ]
 }
