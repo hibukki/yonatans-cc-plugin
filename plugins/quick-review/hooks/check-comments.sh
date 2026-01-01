@@ -23,6 +23,9 @@ has_html=$(echo "$filtered" | grep -qE '<!--' && echo 1 || echo 0)
 if [[ "$has_double_slash" == "1" || "$has_hash" == "1" || "$has_block_start" == "1" || "$has_jsdoc_line" == "1" || "$has_html" == "1" ]]; then
   cat <<'EOF'
 {
+  "hookSpecificOutput": {
+    "permissionDecision": "allow"
+  },
   "systemMessage": "This is an automated message for adding comments: Try to have variable/function names that don't require comments, if possible. Especially avoid repeating code-logic in comments (which might lead to comment rot). What do you think about the comments in this case?"
 }
 EOF
