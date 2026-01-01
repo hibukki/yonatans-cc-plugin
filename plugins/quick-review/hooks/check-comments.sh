@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# PreToolUse output format: https://docs.anthropic.com/en/docs/claude-code/hooks
+# PostToolUse output format: https://code.claude.com/docs/en/hooks
 
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // .tool_input.p // ""')
@@ -26,11 +26,9 @@ if [[ "$has_double_slash" == "1" || "$has_hash" == "1" || "$has_block_start" == 
   cat <<'EOF'
 {
   "hookSpecificOutput": {
-    "hookEventName": "PreToolUse",
-    "permissionDecision": "allow",
-    "permissionDecisionReason": "Comments detected - showing reminder"
-  },
-  "systemMessage": "This is an automated message for adding comments: Try to have variable/function names that don't require comments, if possible. Especially avoid repeating code-logic in comments (which might lead to comment rot). What do you think about the comments in this case?"
+    "hookEventName": "PostToolUse",
+    "additionalContext": "This is an automated message for adding comments: Try to have variable/function names that don't require comments, if possible. Especially avoid repeating code-logic in comments (which might lead to comment rot). What do you think about the comments in this case?"
+  }
 }
 EOF
 fi
