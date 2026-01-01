@@ -12,8 +12,8 @@ if [[ ! "$file_path" =~ \.(js|ts|jsx|tsx|py|go|java|c|cpp|h|hpp|rs|swift|kt)$ ]]
   exit 0
 fi
 
-# Filter out shebangs
-filtered=$(echo "$new_text" | grep -vE '^#!' || true)
+# Filter out shebangs and TS triple-slash directives
+filtered=$(echo "$new_text" | grep -vE '^#!' | grep -vE '^///\s*<reference' || true)
 
 # Check for comment patterns
 has_double_slash=$(echo "$filtered" | grep -qE '//\s*\w' && echo 1 || echo 0)
