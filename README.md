@@ -31,14 +31,6 @@ Add to your `.claude/settings.json`:
 }
 ```
 
-## Optional: Install hookify
-
-This plugin includes hookify rules for extra nudges (e.g., prefer `npm install` over editing package.json). To enable them:
-
-```bash
-/plugin install hookify@claude-plugins-official
-```
-
 ## Setup (for contributors)
 
 ```bash
