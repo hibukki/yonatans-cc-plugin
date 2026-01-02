@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+# PostToolUse output format: https://code.claude.com/docs/en/hooks
+
+cat <<'EOF'
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PostToolUse",
+    "additionalContext": "Tip: If WebFetch is filtering out info you want, you can download the entire webpage and launch a sub task to get info from that downloaded file."
+  }
+}
+EOF
+
+exit 0

@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.57",
+  "version": "0.5.58",
   "description": "Auto-triggers a quick code review after git commits",
   "commands": "./commands/",
   "skills": "./skills/",
@@ -45,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"Tip: If WebFetch is filtering out info you want, you can download the entire webpage and launch a sub task to get info from that downloaded file.\"}}'"
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-web-fetch.sh"
           }
         ]
       },
