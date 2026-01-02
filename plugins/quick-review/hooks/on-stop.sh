@@ -16,7 +16,7 @@ if [[ -n "$completed" ]]; then
 {
   "decision": "block",
   "reason": "Reviews ready",
-  "systemMessage": ${escaped}
+  "additionalContext": ${escaped}
 }
 EOF
 else
