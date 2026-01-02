@@ -20,10 +20,10 @@ fi
 # Count insertions + deletions
 diff_lines=$(git show --stat "$commit_sha" | tail -1 | grep -oE '[0-9]+ insertion|[0-9]+ deletion' | grep -oE '[0-9]+' | paste -sd+ - | bc 2>/dev/null || echo "0")
 
-if [[ "$diff_lines" -gt 300 ]]; then
+if [[ "$diff_lines" -gt 100 ]]; then
   cat <<EOF
 {
-  "systemMessage": "⚠️ Large commit: ${diff_lines} lines changed. As you know, it is nice to have small self-contained commits. This message was triggered by the last commit, but it is only a reminder, use your own judgement."
+  "systemMessage": "As you know, it is nice to have small self-contained commits. This message was automatically triggered by the last commit, but it is only a reminder, use your own judgement."
 }
 EOF
 fi
