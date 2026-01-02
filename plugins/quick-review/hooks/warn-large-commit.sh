@@ -23,7 +23,7 @@ diff_lines=$(git show --stat "$commit_sha" | tail -1 | grep -oE '[0-9]+ insertio
 if [[ "$diff_lines" -gt 100 ]]; then
   cat <<EOF
 {
-  "systemMessage": "As you know, it is nice to have small self-contained commits. This message was automatically triggered by the last commit, but it is only a reminder, use your own judgement."
+  "additionalContext": "As you know, it is nice to have small self-contained commits. This message was automatically triggered by the last commit, but it is only a reminder, use your own judgement."
 }
 EOF
 fi
