@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: This skill should be used when the user asks to "brainstorm", "find ideas", "think about options", "explore approaches", or wants to consider multiple perspectives on a problem before deciding on a solution.
+description: This skill should be used when the user asks to "brainstorm", "find ideas", "explore approaches", or explicitly wants multiple perspectives on a problem before deciding.
 ---
 
 # Brainstorm Skill
@@ -10,7 +10,9 @@ When the user wants to brainstorm, launch 3 subagents in parallel using the Task
 ## How to Brainstorm
 
 1. Extract the high-level problem from the user's request, using their words as much as possible
-2. Launch all 3 agents in parallel (single message with 3 Task tool calls)
+2. Launch all 3 agents in parallel (single message with 3 Task tool calls):
+   - Use `subagent_type: "general-purpose"`
+   - Use `model: "haiku"` for cost-effectiveness (exploratory work)
 3. Wait for all results
 4. Synthesize findings and present to user
 
@@ -21,14 +23,16 @@ When the user wants to brainstorm, launch 3 subagents in parallel using the Task
 **Personality:** Thinks about pain points, bounds, what scenarios to avoid, and only then thinks how to address those.
 
 **Prompt template:**
+
 ```
 Problem: [user's problem in their words]
 
-Analyze this from a defensive perspective:
-1. What are the pain points and constraints?
-2. What bounds exist (technical, time, resources)?
-3. What scenarios must be avoided?
-4. Only after identifying the above, suggest approaches that address them.
+Analyze from a defensive perspective. List:
+1. Pain points and constraints
+2. Bounds (technical, time, resources)
+3. Scenarios that must be avoided
+
+Then suggest approaches that address these concerns.
 ```
 
 ### Agent 2: Minimal Code Advocate
@@ -36,14 +40,16 @@ Analyze this from a defensive perspective:
 **Personality:** Tries finding solutions that use as little code as possible.
 
 **Prompt template:**
+
 ```
 Problem: [user's problem in their words]
 
-Find the simplest solution:
-1. What's the absolute minimum code needed?
-2. Can existing tools/libraries handle this?
-3. What can be deleted or avoided entirely?
-4. Propose the leanest viable approach.
+Find the simplest solution. Consider:
+1. The absolute minimum code needed
+2. Existing tools/libraries that could handle this
+3. What can be deleted or avoided entirely
+
+Propose the leanest viable approach.
 ```
 
 ### Agent 3: Battle-Seasoned CTO
@@ -51,14 +57,16 @@ Find the simplest solution:
 **Personality:** A battle-seasoned CTO who knows how things go wrong.
 
 **Prompt template:**
+
 ```
 Problem: [user's problem in their words]
 
-Review this with experience-earned skepticism:
-1. Where will this break in production?
-2. What edge cases will bite us later?
-3. What looks simple but isn't?
-4. What would you insist on if this was your company?
+Review with experience-earned skepticism. Identify:
+1. Where this will break in production
+2. Edge cases that will bite us later
+3. What looks simple but isn't
+
+State what you'd insist on if this was your company.
 ```
 
 ## Example Usage
