@@ -18,8 +18,21 @@ echo "$(date): PostToolUse hook called" >> "$LOG"
 # --- Check for and inject any completed reviews ---
 inject_output=$(get_completed_reviews "$REVIEW_DIR")
 
+# --- If this was a git commit, handle it ---
+command=$(echo "$input" | jq -r '.tool_input.command // ""')
+commit_output=""
+
+# Check if this is a git commit command (handles flags like: git --no-pager commit)
+is_git_commit() {
+  [[ "$1" =~ (^|[[:space:]])git[[:space:]].*commit([[:space:]]|$) ]] || [[ "$1" == *"git commit"* ]]
+}
+
+if is_git_commit "$command"; then
+  commit_output=$(echo "$input" | "$SCRIPT_DIR/on-commit.sh" || true)
+fi
+
 # --- Output additionalContext ---
-combined="${inject_output}"
+combined="${inject_output}${commit_output}"
 escaped=$(echo "$combined" | jq -Rs .)
 
 cat <<EOF
