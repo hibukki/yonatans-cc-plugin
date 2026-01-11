@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.85",
+  "version": "0.5.87",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/warn-large-commit.sh"
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit.sh"
           }
         ]
       },
