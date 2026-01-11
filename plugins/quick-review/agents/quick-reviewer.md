@@ -48,7 +48,7 @@ tools: ["Bash", "Read", "Grep", "Glob"]
 
 ## Important: Start with a tool call
 
-Your FIRST action must be a tool call - do NOT output any text before using a tool. Start by running `git show <sha>` for the commit you're reviewing, or `git log -5` to see recent commits. Only output your review text after you've gathered all the information you need.
+Your FIRST action must be a tool call - do NOT output any text before using a tool. Start by running `git show <sha>` for the commit you're reviewing, or `git log -5` to see recent commits. You might also want to check what `claude.md` files exist, to learn about project standards. Only output your review text after you've gathered all the information you need.
 
 ## What to review
 
