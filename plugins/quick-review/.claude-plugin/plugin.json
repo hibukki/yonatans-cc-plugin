@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.77",
+  "version": "0.5.78",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -24,6 +24,15 @@
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/check-uv-add.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "EnterPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"additionalContext\": \"Tip: As part of making a plan, make a Comprehensive To Do list by default.\"}'"
           }
         ]
       }
