@@ -9,7 +9,7 @@ if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
   cat <<EOF
 {
   "decision": "block",
-  "reason": "There are uncommitted changes. If they are relevant, please commit them (in a branch, not main). Otherwise you can git stash, gitignore, or whatever fits the situation."
+  "reason": "There are uncommitted changes. Please commit, stash, gitignore, or whatever fits the situation."
 }
 EOF
   exit 0
