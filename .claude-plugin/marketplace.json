@@ -1,11 +1,11 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "yonatans-cc-marketplace",
+  "description": "Yonatan's Claude Code plugins",
   "owner": {
     "name": "Yonatan"
   },
   "metadata": {
-    "description": "Yonatan's Claude Code plugins",
     "pluginRoot": "./plugins"
   },
   "plugins": [
