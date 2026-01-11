@@ -1,4 +1,5 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "yonatans-cc-marketplace",
   "owner": {
     "name": "Yonatan"
@@ -11,7 +12,8 @@
     {
       "name": "quick-review",
       "source": "./plugins/quick-review",
-      "description": "Auto-triggers a quick code review after git commits"
+      "description": "Yonatan's workflow, including async auto-reviews, comment reduction, and more",
+      "category": "productivity"
     }
   ]
 }
