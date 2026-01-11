@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.78",
+  "version": "0.5.79",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"additionalContext\": \"Tip: As part of making a plan, make a Comprehensive To Do list by default.\"}'"
+            "command": "echo '{\"additionalContext\": \"Tip: Use TodoWrite to break down the plan into trackable tasks.\"}'"
           }
         ]
       }
