@@ -2,9 +2,11 @@
 
 ## Plugin Marketplace
 
-### Official marketplace docs
+### Official docs
 
-https://code.claude.com/docs/en/plugin-marketplaces
+- Marketplace: https://code.claude.com/docs/en/plugin-marketplaces
+- Hooks: https://code.claude.com/docs/en/hooks
+- Plugins reference: https://code.claude.com/docs/en/plugins-reference
 
 ### Examples by Anthropic
 
