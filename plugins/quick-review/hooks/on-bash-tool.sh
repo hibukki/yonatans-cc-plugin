@@ -29,6 +29,10 @@ is_git_commit() {
 
 if is_git_commit "$command"; then
   commit_output=$(echo "$input" | "$SCRIPT_DIR/on-commit.sh" || true)
+
+  # Reset write counter on commit
+  session_id=$(echo "$input" | jq -r '.session_id')
+  [[ -n "$session_id" && "$session_id" != "null" ]] && rm -f "/tmp/claude-writes-${session_id}"
 fi
 
 # --- Output additionalContext ---
