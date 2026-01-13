@@ -85,6 +85,41 @@ After all subagents complete, summarize:
    - High: Review the specific code, consider disabling until fixed
    - Medium/Low: Note for awareness, optionally report upstream
 
+### Step 5: Save Review Results
+
+After completing the review, save the results so the plugin won't be flagged as "unreviewed" on next session start.
+
+1. **Create the reviews directory** (if it doesn't exist):
+   ```bash
+   mkdir -p ~/.claude/plugin-reviews
+   ```
+
+2. **Compute the plugin hash** using this command:
+   ```bash
+   find {plugin_path} -type f -not -path '*/.git/*' -print0 | sort -z | xargs -0 cat 2>/dev/null | shasum -a 256 | cut -d' ' -f1
+   ```
+
+3. **Save the review file** at `~/.claude/plugin-reviews/{plugin-name}-{hash}.json`:
+   ```json
+   {
+     "plugin": "{plugin-name}",
+     "marketplace": "{marketplace-name}",
+     "hash": "{computed-hash}",
+     "reviewed_at": "{ISO-8601-timestamp}",
+     "result": "passed|issues_found",
+     "findings": [
+       {
+         "severity": "Critical|High|Medium|Low",
+         "file": "path/to/file.sh",
+         "line": 42,
+         "description": "Description of the issue"
+       }
+     ]
+   }
+   ```
+
+Use the Write tool to create this file. This ensures the SessionStart hook knows this plugin version has been reviewed.
+
 ## Example Usage
 
 **User:** "Review my installed plugins for security issues"
