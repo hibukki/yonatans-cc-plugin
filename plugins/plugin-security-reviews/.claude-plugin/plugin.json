@@ -1,5 +1,17 @@
 {
   "name": "plugin-security-reviews",
   "version": "0.1.0",
-  "description": "Security review for Claude Code plugins with auto-detection of new/changed plugins"
+  "description": "Security review for Claude Code plugins with auto-detection of new/changed plugins",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
