@@ -65,7 +65,7 @@ This enables the pre-commit hook that auto-bumps the plugin version.
 
 As markdown, with optimizations for LLMs
 
-[link](https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7)
+[context7](https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7)
 
 ### Interacting with a browser
 
