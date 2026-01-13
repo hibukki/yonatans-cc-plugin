@@ -6,6 +6,27 @@ source "$SCRIPT_DIR/lib-hash.sh"
 
 SETTINGS_FILE="$HOME/.claude/settings.json"
 PLUGIN_CACHE_DIR="$HOME/.claude/plugins/cache"
+CONFIG_FILE="$HOME/.claude/plugin-security-reviews.local.json"
+
+# Get reminder mode from config (default: on-startup-every-time)
+get_reminder_mode() {
+  if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo "on-startup-every-time"
+    return
+  fi
+  local mode
+  mode=$(jq -r '.reminder // "on-startup-every-time"' "$CONFIG_FILE" 2>/dev/null)
+  echo "$mode"
+}
+
+# Check if a plugin was dismissed (for on-startup-once mode)
+is_plugin_dismissed() {
+  local plugin_name="$1"
+  if [[ ! -f "$CONFIG_FILE" ]]; then
+    return 1
+  fi
+  jq -e --arg p "$plugin_name" '.dismissed_plugins // [] | index($p) != null' "$CONFIG_FILE" >/dev/null 2>&1
+}
 
 # Read enabled plugins from settings
 get_enabled_plugins() {
@@ -25,6 +46,14 @@ parse_plugin_entry() {
 
 # Check for unreviewed plugins
 check_unreviewed_plugins() {
+  local reminder_mode
+  reminder_mode=$(get_reminder_mode)
+
+  # If reminders are off, exit early
+  if [[ "$reminder_mode" == "off" ]]; then
+    return
+  fi
+
   local unreviewed=()
 
   while IFS= read -r entry; do
@@ -41,6 +70,10 @@ check_unreviewed_plugins() {
     hash=$(compute_plugin_hash "$plugin_path")
 
     if ! is_plugin_reviewed "$plugin_name" "$hash"; then
+      # For on-startup-once mode, skip dismissed plugins
+      if [[ "$reminder_mode" == "on-startup-once" ]] && is_plugin_dismissed "$plugin_name"; then
+        continue
+      fi
       unreviewed+=("$plugin_name")
     fi
   done < <(get_enabled_plugins)
