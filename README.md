@@ -54,3 +54,21 @@ git config core.hooksPath .githooks
 ```
 
 This enables the pre-commit hook that auto-bumps the plugin version.
+
+## Other plugins that seem promising
+
+### Search
+
+[exa MCP](https://exa.ai/docs/reference/exa-mcp)
+
+### Getting docs
+
+As markdown, with optimizations for LLMs
+
+[link](https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7)
+
+### Interacting with a browser
+
+[dev browser](https://github.com/SawyerHood/dev-browser)
+
+Seems more promising than the playwright MCP and the claude chrome plugin.
