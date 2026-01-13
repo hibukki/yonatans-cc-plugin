@@ -14,6 +14,12 @@
       "source": "./plugins/quick-review",
       "description": "Yonatan's workflow, including async auto-reviews, comment reduction, and more",
       "category": "productivity"
+    },
+    {
+      "name": "plugin-security-reviews",
+      "source": "./plugins/plugin-security-reviews",
+      "description": "Security review for Claude Code plugins with auto-detection of new/changed plugins",
+      "category": "security"
     }
   ]
 }
