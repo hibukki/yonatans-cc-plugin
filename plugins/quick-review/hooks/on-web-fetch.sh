@@ -7,7 +7,7 @@ cat <<'EOF'
 {
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "Tip: If WebFetch is filtering out info you want, you can download the entire webpage and launch a sub task to get info from that downloaded file."
+    "additionalContext": "Tip: If WebFetch is filtering out info you want, you can download the entire webpage and launch a sub task to get info from that downloaded file. If that would be helpful, do it without asking the user for permission (unless the user indicated another preference)."
   }
 }
 EOF
