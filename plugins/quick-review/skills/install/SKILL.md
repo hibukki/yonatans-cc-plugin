@@ -17,4 +17,18 @@ Don't default to `brew` or to installation instructions you memorized, but rathe
 
 ## Option 3: Installing python versions specifically
 
-Use `pyenv` by default. [Here](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) are the installation instructions if it's not installed.
+Use `uv python install`. [Here](https://docs.astral.sh/uv/guides/install-python/) are the official docs.
+
+```bash
+# Install a Python version
+uv python install 3.12
+
+# Install multiple versions
+uv python install 3.10 3.11 3.12
+
+# List installed versions
+uv python list --only-installed
+
+# Pin a version for the current project
+uv python pin 3.12
+```
