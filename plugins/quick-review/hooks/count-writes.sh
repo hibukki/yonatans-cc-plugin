@@ -23,5 +23,3 @@ if [[ "$count" -eq 5 ]]; then
 }
 EOF
 fi
-
-exit 0

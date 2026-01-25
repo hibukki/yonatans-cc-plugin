@@ -32,5 +32,3 @@ if [[ "$has_double_slash" == "1" || "$has_hash" == "1" || "$has_block_start" == 
 }
 EOF
 fi
-
-exit 0

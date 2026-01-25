@@ -23,7 +23,4 @@ if echo "$new_text" | grep -qE '":\s*"[\^~]?[0-9]'; then
   }
 }
 EOF
-  exit 0
 fi
-
-exit 0

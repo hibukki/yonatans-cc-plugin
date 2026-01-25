@@ -11,5 +11,3 @@ cat <<'EOF'
   }
 }
 EOF
-
-exit 0

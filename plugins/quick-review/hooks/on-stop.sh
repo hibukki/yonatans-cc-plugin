@@ -32,5 +32,3 @@ EOF
 else
   echo '{"decision": "approve"}'
 fi
-
-exit 0

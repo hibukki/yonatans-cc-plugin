@@ -9,4 +9,3 @@ For best results:
 
 The review results will appear in a later PostToolUse (when the review is done).
 EOF
-exit 0
