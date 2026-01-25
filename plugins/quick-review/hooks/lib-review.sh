@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Shared library for review-related hooks
 
+# Source lib-common.sh to make require_jq_or_exit available to scripts that source us
+# (the calling script should call require_jq_or_exit, not this library)
 source "$(dirname "${BASH_SOURCE[0]}")/lib-common.sh"
 
 # Get review directory for current session
