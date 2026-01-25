@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# PreToolUse output format: https://docs.anthropic.com/en/docs/claude-code/hooks
+source "$(dirname "$0")/lib-common.sh"
 
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // .tool_input.p // ""')
@@ -12,15 +12,7 @@ if [[ ! "$file_path" =~ package\.json$ ]]; then
   exit 0
 fi
 
-# Check for version specifier patterns (": "^1, ": "~2, etc)
+# Check for version specifier patterns (e.g. "lodash": "^4.17.0")
 if echo "$new_text" | grep -qE '":\s*"[\^~]?[0-9]'; then
-  cat <<'EOF'
-{
-  "hookSpecificOutput": {
-    "hookEventName": "PreToolUse",
-    "permissionDecision": "deny",
-    "permissionDecisionReason": "Use `npm install <pkg>` or `pnpm add <pkg>` instead of editing package.json directly."
-  }
-}
-EOF
+  deny_with_reason 'Use `npm install <pkg>` or `pnpm add <pkg>` instead of editing package.json directly.'
 fi
