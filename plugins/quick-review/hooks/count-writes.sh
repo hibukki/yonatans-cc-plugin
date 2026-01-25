@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+source "$(dirname "$0")/lib-common.sh"
+require_jq_or_exit
+
 input=$(cat)
 session_id=$(echo "$input" | jq -r '.session_id')
 

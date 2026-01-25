@@ -2,6 +2,7 @@
 set -euo pipefail
 
 source "$(dirname "$0")/lib-common.sh"
+require_jq_or_exit
 
 # Block ExitPlanMode if the plan doesn't mention "commit" (per user's CLAUDE.md preferences)
 

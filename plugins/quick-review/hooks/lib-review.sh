@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Shared library for review-related hooks
 
+source "$(dirname "${BASH_SOURCE[0]}")/lib-common.sh"
+
 # Get review directory for current session
 get_review_dir() {
   local input="$1"

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# PostToolUse output format: https://code.claude.com/docs/en/hooks
+source "$(dirname "$0")/lib-common.sh"
+require_jq_or_exit
 
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // .tool_input.p // ""')

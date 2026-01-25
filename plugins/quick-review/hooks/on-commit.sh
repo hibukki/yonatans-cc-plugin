@@ -7,6 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
 source "$SCRIPT_DIR/lib-review.sh"
+require_jq_or_exit
 
 input=$(cat)
 REVIEW_DIR=$(get_review_dir "$input")
