@@ -21,7 +21,7 @@ if [[ "$count" -eq 5 ]]; then
 {
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "Reminder: commit small self-contained changes"
+    "additionalContext": "Reminder: commit small self-contained changes. Reminder 2: Pushing is encouraged (usually not to main)"
   }
 }
 EOF
