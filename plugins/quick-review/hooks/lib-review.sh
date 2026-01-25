@@ -46,7 +46,7 @@ count_pending_reviews() {
   local review_dir="$1"
 
   if [[ -d "$review_dir" ]]; then
-    ls "$review_dir"/review-*.tmp 2>/dev/null | wc -l | tr -d ' '
+    find "$review_dir" -maxdepth 1 -name 'review-*.tmp' 2>/dev/null | wc -l | tr -d ' '
   else
     echo "0"
   fi
