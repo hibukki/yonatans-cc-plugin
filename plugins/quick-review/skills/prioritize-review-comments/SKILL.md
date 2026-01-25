@@ -1,15 +1,11 @@
 ---
 name: prioritize-review-comments
-description: This skill should be used after receiving an automated code review, whether from a hook, Claude on GitHub, a review agent, or similar automated reviewer. Use when processing review comments to decide which to fix.
+description: Decide which automated review comments to fix vs skip. Use after receiving feedback from hooks, GitHub bots, or review agents.
 ---
 
 # Prioritize Review Comments
 
 After receiving automated review feedback, apply this framework to decide what to fix.
-
-## Core Principle
-
-Make the current feature/PR as clean as possible. Don't let "minor" or "deferrable" labels excuse real issues within scope.
 
 ## What to Fix
 
@@ -51,4 +47,4 @@ For each review comment, ask:
 
 **Skip:** "While you're here, the function above could use better error handling" → Out of scope, different change.
 
-**Skip:** "This should use the new API pattern" → If reviewer didn't realize you're intentionally matching existing code, explain and skip.
+**Skip:** "This should use the new API pattern" → Out of scope if you're intentionally matching existing code.
