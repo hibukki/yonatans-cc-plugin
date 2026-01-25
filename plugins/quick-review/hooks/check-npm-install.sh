@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # PreToolUse output format: https://docs.anthropic.com/en/docs/claude-code/hooks

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Shared library for review-related hooks
 
 # Get review directory for current session

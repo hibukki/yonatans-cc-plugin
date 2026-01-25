@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # PostToolUse output format: https://code.claude.com/docs/en/hooks

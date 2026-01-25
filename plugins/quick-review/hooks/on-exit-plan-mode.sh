@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # Block ExitPlanMode if the plan doesn't mention "commit" (per user's CLAUDE.md preferences)
