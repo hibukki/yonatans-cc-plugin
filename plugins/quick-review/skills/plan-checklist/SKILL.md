@@ -45,3 +45,6 @@ For example:
 
 - The user wants to implement something but an existing tool exists, or similar code in this repository can be reused
 - The user asked to add a 2nd DB, or an additional programming language. Maybe the user doesn't understand the long term engineering implications of this but you do. These examples were picked because they were extreme, but in fact the situation might be more subtle.
+- The user asked you to make tests pass but the tests would lead to a not-elegant implementation (which was maybe hard to foresee when writing the tests)
+
+You might also have insight here after writing a draft of the plan, perhaps you'll notice it has some negative consequences on the code health that you can point out before finalizing the plan.
