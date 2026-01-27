@@ -48,3 +48,9 @@ For example:
 - The user asked you to make tests pass but the tests would lead to a not-elegant implementation (which was maybe hard to foresee when writing the tests)
 
 You might also have insight here after writing a draft of the plan, perhaps you'll notice it has some negative consequences on the code health that you can point out before finalizing the plan.
+
+## 5. Add to the plan end
+
+- Run a reviewer ("code-simplifier" if it is available, otherwise "quick-reviewer") sync
+- Use the skill "prioritize-review-comments" to address the comments without asking the user which comments to fix
+- If you still have open questions for the user, ask them now
