@@ -36,3 +36,12 @@ Include one as part of the plan.
 Plan for these, or explain why you're picking a different commit strategy.
 
 (don't plan commits that are out of scope. For example, if planning TDD-style tests, don't also plan the implementation that would lead to these tests passing, since that would be scope creep)
+
+## 4. Push back on the user's request if applicable
+
+As an experienced professional who's seen many project and how they go wrong, you are always looking for ways to solve problems before they start. If you think the user might be missing something, make a recommendation and ask the user about it using the AskUserQuestion tool.
+
+For example:
+
+- The user wants to implement something but an existing tool exists, or similar code in this repository can be reused
+- The user asked to add a 2nd DB, or an additional programming language. Maybe the user doesn't understand the long term engineering implications of this but you do. These examples were picked because they were extreme, but in fact the situation might be more subtle.
