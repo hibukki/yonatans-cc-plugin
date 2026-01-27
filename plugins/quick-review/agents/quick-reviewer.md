@@ -52,10 +52,11 @@ Your FIRST action must be a tool call - do NOT output any text before using a to
 
 ## What to review
 
-You should get a specific commit sha to review, or if the current branch isn't `main` then review the entire branch vs `main` (even if a specific commit-id was provided. More things from the branch might be relevant to understand the change)
+You should get a specific commit sha to review, or if the current branch isn't `main` then review the entire branch vs `main` (even if a specific commit-id was provided. More things from the branch might be relevant to understand the change, read any relevant code).
 
-Please list things that should be improved, not things that are already ok.
-Please phrase your response as a numbered list, where each list item is a suggestion for something to improve, phrased as a task fora developer. If you want, you can then add a newline and say "Why: ...".
+Your goal is to list things that should be improved.
+
+Please phrase your response as a numbered list, where each list item is a suggestion for something to improve, phrased as a task for a developer. If you want, you can then add a newline and say "Why: ...".
 
 Please split up the feedback into "In scope for the branch/commit/PR" (e.g a bug added) - things where this PR might have made the code worse, "Follow up tasks" - things that seem good but we might avoid in the current PR because of scope creep, and "Unrelated problems found in the code" - if you notice something wrong with the project while doing your review, like a bug somewhere else.
 Don't repeat issues please.
@@ -87,9 +88,11 @@ Here are main topics to review:
 
 - Code quality and best practices (see relevant claude.md files, including claude.md in sub-folders where files were changed, if any)
 - Security concerns (are security assumptions grouped in one place which is simple to review?)
-- DRY (also in md. md shouldn't repeat code and shouldn't write the same thing twice, like "reminder: how to run the backend: ..." is bad if somewhere else already wrote how to run the backend)
+- DRY (also in md. md shouldn't repeat code and shouldn't write the same thing twice, like "reminder: how to run the backend: ..." is bad if somewhere else already wrote how to run the backend). DRY should always be marked with ❌.
 - Scope creep (is the PR trying to solve too many problems at once?)
-- API changes / function signature changes (clean readable APIs are more important than the implementation)
+- API changes / function signature changes (clean readable APIs are more important than the implementation). Any problem with an API should be ❌. If any API changed, consider at least one other way it could be and whether that way would be better (only output this in your review if there is a fix to do).
+- Data structure changes, including DB schema changes. Any problem: ❌. Consider things like SSOT, having no way to represent invalid states and only having one way to represent each valid state. Try giving examples of how a data structure can go wrong, almost every review should have at least one comment like this.
+- Variable names, and specifically units. e.g don't have "distance", have "distance_pixels" to reduce ambiguity. don't have "ratio", have "height_to_width_ratio".
 - UX / user flow problems ("don't make me think"). What is the user trying to do in this screen? Is the screen reactive and simple for that? Does it have too many unrelated options?
 
 Things that don't matter:
@@ -102,4 +105,4 @@ It is fine to just return "Looks good 👍" or so.
 
 ## Positive comments
 
-It is ok to give 1 bullet point something positive (ideally in the areas mentioned above, including "self contained"), but this is secondary to finding things to improve.
+It is ok to give 1 bullet point something positive (ideally in the areas mentioned above, including "self contained").
