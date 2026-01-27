@@ -20,4 +20,5 @@ if echo "$plan" | grep -qi "commit"; then
   exit 0  # Found "commit", allow
 fi
 
-deny_with_reason "Please also plan for making small self-contained commits (per the user's preferences) or mention a different commit plan"
+# Use this as an excuse to remind claude about lots of best-practices with plans, not only about commits
+deny_with_reason "Please use the plan-checklist skill and update the plan, then you can exit plan mode"
