@@ -26,12 +26,21 @@ If credentials are missing, guide user through setup. Claude can assist with bro
    - Application type: Desktop app
    - Download JSON credentials to `~/.claude/google-workspace-credentials.json`
 
-**First-time auth**:
-```bash
-oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare
-```
+**First-time auth flow:**
 
-This might fail if the auth opened in e.g the wrong chrome profile, in which case the user will need claude to run this again.
+1. Check credentials exist: `test -f ~/.claude/google-workspace-credentials.json`
+2. If missing, guide user through setup (steps 1-4 above)
+3. Run oauth2l **in background** (it blocks until user completes auth):
+   ```bash
+   oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare --disableAutoOpenConsentPage
+   ```
+4. Read the background task output to extract the auth URL (line starting with `https://accounts.google.com/`)
+5. Present to user via AskUserQuestion:
+   ```
+   Question: "Please authenticate with Google: <URL>"
+   Options: ["Done", "I need help"]
+   ```
+6. After user confirms, check the background task - it should complete with the token
 
 ## Handling SERVICE_DISABLED errors
 
@@ -48,15 +57,15 @@ oauth2l caches tokens per scope. To add a new scope or upgrade permissions:
 
 **Add a new API** (e.g., Docs after using Gmail):
 ```bash
-oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents.readonly --output_format bare
+oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents.readonly --output_format bare --disableAutoOpenConsentPage
 ```
-This triggers a new consent flow for the additional scope.
+This triggers a new consent flow for the additional scope. Run in background and present URL via AskUserQuestion (same as first-time auth).
 
 **Upgrade permissions** (e.g., `documents.readonly` → `documents`):
 ```bash
-oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents --output_format bare
+oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents --output_format bare --disableAutoOpenConsentPage
 ```
-The user will be prompted to grant the broader permission.
+Run in background and present URL via AskUserQuestion.
 
 **Common scopes:**
 - `gmail.readonly`, `gmail.modify`, `gmail.send`
