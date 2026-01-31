@@ -1,0 +1,5 @@
+{
+  "name": "google-workspace-connector",
+  "version": "0.1.0",
+  "description": "Access Google Workspace APIs (Gmail, Drive, Sheets, Docs) via oauth2l + curl"
+}

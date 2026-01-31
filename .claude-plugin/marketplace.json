@@ -20,6 +20,12 @@
       "source": "./plugins/plugin-security-reviews",
       "description": "Security review for Claude Code plugins with auto-detection of new/changed plugins",
       "category": "security"
+    },
+    {
+      "name": "google-workspace-connector",
+      "source": "./plugins/google-workspace-connector",
+      "description": "Access Google Workspace APIs (Gmail, Drive, Sheets, Docs) via oauth2l + curl",
+      "category": "productivity"
     }
   ]
 }
