@@ -39,6 +39,10 @@ review_output=$(claude -p "Review this plan file: $plan_file" --allowedTools 'Re
 
 touch "$review_marker"
 
-deny_with_reason "Plan review feedback (you can now exit plan mode again to proceed):
+deny_with_reason "A plan-reviewer-claude has suggestions for this plan. Use the suggestions that are helpful for making a top-notch plan, even if the suggestions are small. Discard suggestions that are wrong, of course. You can also AskUserQuestion.
+<Suggestions>
+$review_output
+</Suggestions>
 
-$review_output"
+If you want to call this reviewer again, you can launch the plan-reviewer subagent.
+"
