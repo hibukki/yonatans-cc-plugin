@@ -40,7 +40,9 @@ If credentials are missing, guide user through setup. Claude can assist with bro
    Question: "Please authenticate with Google: <URL>"
    Options: ["Done", "I need help"]
    ```
-6. After user confirms, check the background task - it should complete with the token
+6. After user confirms, check the background task - it should output the access token (a long string starting with `ya29.`). The token is automatically cached in `~/.oauth2l` for future use.
+
+**If auth fails:** Check that credentials.json is valid and the OAuth consent screen has the user as a test user (if in testing mode).
 
 ## Handling SERVICE_DISABLED errors
 
