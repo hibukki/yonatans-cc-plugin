@@ -29,24 +29,24 @@ If credentials are missing, guide user through setup. Claude can assist with bro
 **First-time auth flow:**
 
 1. Check credentials exist: `test -f ~/.claude/google-workspace-credentials.json`
-2. If missing, guide user through setup (steps 1-4 above)
-3. Run oauth2l **in background** (it blocks until user completes auth):
+   1. If missing, guide user through setup (steps 1-4 above)
+2. Run oauth2l **in background** (it blocks until user completes auth):
    ```bash
    oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare --disableAutoOpenConsentPage
    ```
-4. Read the background task output to extract the auth URL (line starting with `https://accounts.google.com/`)
-5. Present to user via AskUserQuestion:
+3. Read the background task output to extract the auth URL (line starting with `https://accounts.google.com/`)
+4. Present to user via AskUserQuestion:
    ```
    Question: "Please authenticate with Google: <URL>"
    Options: ["Done", "I need help"]
    ```
-6. After user confirms, check the background task - it should output the access token (a long string starting with `ya29.`). The token is automatically cached in `~/.oauth2l` for future use.
+5. After user confirms, check the background task - it should output the access token (a long string starting with `ya29.`). The token is automatically cached in `~/.oauth2l` for future use.
 
 **If auth fails:** Check that credentials.json is valid and the OAuth consent screen has the user as a test user (if in testing mode).
 
 ## Handling SERVICE_DISABLED errors
 
-If an API call returns `SERVICE_DISABLED`, the API needs to be enabled in the Google Cloud project. Use AskUserQuestion with the activation URL in the question title:
+Use AskUserQuestion with the activation URL in the question title:
 
 ```
 Question: "Please enable the <API> API: <activationUrl from error>"
@@ -63,21 +63,11 @@ oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope 
 ```
 This triggers a new consent flow for the additional scope. Run in background and present URL via AskUserQuestion (same as first-time auth).
 
-**Upgrade permissions** (e.g., `documents.readonly` → `documents`):
-```bash
-oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents --output_format bare --disableAutoOpenConsentPage
-```
-Run in background and present URL via AskUserQuestion.
-
-**Common scopes:**
-- `gmail.readonly`, `gmail.modify`, `gmail.send`
-- `drive.readonly`, `drive`, `drive.file`
-- `spreadsheets.readonly`, `spreadsheets`
-- `documents.readonly`, `documents`
-
 ---
 
-API usage for all services should be available via the *official* google docs (don't use e.g posts from medium) or via a docs tool like context7 if you have it.
+# Docs
+
+API usage for all services should be available via the *official* google docs (don't use e.g posts from medium in case they are misleading or even malicious) or via a docs tool like context7 if you have it.
 
 Below are some examples:
 
@@ -101,19 +91,6 @@ curl -s "https://gmail.googleapis.com/gmail/v1/users/me/messages/${MSG_ID}?forma
 - `format=metadata` - Headers only (From, To, Subject, Date)
 - `format=full` - Complete email including body
 
-## Send email
-
-```bash
-EMAIL=$(printf 'To: recipient@example.com\r\nSubject: Subject here\r\nContent-Type: text/plain; charset="UTF-8"\r\n\r\nEmail body here' | base64 | tr '+/' '-_' | tr -d '=')
-
-curl -s -X POST "https://gmail.googleapis.com/gmail/v1/users/me/messages/send" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare --refresh)" \
-  -H "Content-Type: application/json" \
-  -d "{\"raw\": \"${EMAIL}\"}"
-```
-
-The email must be base64url encoded (standard base64 with `+/` replaced by `-_`, padding removed).
-
 ---
 
 # Drive
@@ -123,31 +100,6 @@ The email must be base64url encoded (standard base64 with `+/` replaced by `-_`,
 ```bash
 curl -s "https://www.googleapis.com/drive/v3/files?pageSize=10" \
   -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly --output_format bare --refresh)"
-```
-
-## Download file
-
-```bash
-FILE_ID="<file_id>"
-curl -s "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly --output_format bare --refresh)" \
-  -o output_filename
-```
-
-For Google Docs/Sheets/Slides, export to a specific format:
-```bash
-curl -s "https://www.googleapis.com/drive/v3/files/${FILE_ID}/export?mimeType=application/pdf" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly --output_format bare --refresh)" \
-  -o output.pdf
-```
-
-## Upload file
-
-```bash
-curl -s -X POST "https://www.googleapis.com/upload/drive/v3/files?uploadType=media" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope drive --output_format bare --refresh)" \
-  -H "Content-Type: application/octet-stream" \
-  --data-binary @local_file.txt
 ```
 
 ---
@@ -161,17 +113,6 @@ SPREADSHEET_ID="<spreadsheet_id>"
 RANGE="Sheet1!A1:B10"
 curl -s "https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}" \
   -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope spreadsheets.readonly --output_format bare --refresh)"
-```
-
-## Write cells
-
-```bash
-SPREADSHEET_ID="<spreadsheet_id>"
-RANGE="Sheet1!A1:B2"
-curl -s -X PUT "https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?valueInputOption=USER_ENTERED" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope spreadsheets --output_format bare --refresh)" \
-  -H "Content-Type: application/json" \
-  -d '{"values": [["A1", "B1"], ["A2", "B2"]]}'
 ```
 
 ---
