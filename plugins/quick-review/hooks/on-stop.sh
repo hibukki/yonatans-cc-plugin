@@ -5,6 +5,16 @@ SCRIPT_DIR="$(dirname "$0")"
 source "$SCRIPT_DIR/lib-review.sh"
 require_jq_or_exit
 
+# Read input early so we can pass it to sub-scripts
+input=$(cat)
+
+# Check if message ends with "?" - remind to use AskUserQuestion
+question_check=$("$SCRIPT_DIR/check-question-ending.sh" <<< "$input")
+if echo "$question_check" | jq -e '.decision == "block"' >/dev/null 2>&1; then
+  echo "$question_check"
+  exit 0
+fi
+
 # Check for uncommitted changes
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
   cat <<EOF
@@ -16,7 +26,6 @@ EOF
   exit 0
 fi
 
-input=$(cat)
 review_dir=$(get_review_dir "$input")
 
 # Check for completed reviews only
