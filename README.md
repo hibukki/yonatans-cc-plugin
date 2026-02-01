@@ -1,26 +1,52 @@
-# quick-review
+# yonatans-cc-marketplace
 
-A Claude Code plugin for better coding habits.
+A Claude Code plugin marketplace with tools for better coding habits.
 
-## Features
+## Plugins
 
-**Auto-review commits** - When Claude commits code, an async reviewer is automatically spawned. The review comes back later with suggestions, and Claude is encouraged to fix correct comments without waiting for you.
+### quick-review
 
-**Plan commit check** - When Claude tries to exit plan mode, it's blocked unless the plan mentions "commit". This encourages planning for small, self-contained commits upfront.
+The main plugin - enforces good development practices and automates code review.
 
-**Write counter** - After every 5 file writes, Claude is reminded to commit small self-contained changes.
+#### Code Review Workflow
 
-**Large commit warning** - When Claude makes a commit over 100 lines, it's reminded that small, self-contained commits are preferred.
+**Uncommitted changes block** - Don't let Claude ask the user questions if there are uncommitted changes.
 
-**Comment quality check** - When Claude writes a new comment, it's reminded that redundant comments are bad and asked if this comment seems necessary. This often leads Claude to remove unnecessary comments on its own.
+**Auto-review commits** - Claude's code gets reviewed automatically after each commit.
 
-**Package management** - When Claude tries to add a package by editing package.json or pyproject.toml directly, it's blocked and reminded to use the command line (`npm install` or `uv add`).
+**Review comment prioritization** - Framework for deciding which automated review comments to fix vs skip. ([skill](plugins/quick-review/skills/prioritize-review-comments/SKILL.md))
 
-**WebFetch tip** - When Claude uses WebFetch, it's reminded that downloading the full page often works better than the filtered extraction.
+**Manual review command** - `/quick-review` to trigger a code review on demand.
 
-**Brainstorm mode** - When you ask to "brainstorm" or "find ideas", Claude launches 3 parallel subagents with different perspectives: a pain-points analyst, a minimal-code advocate, and a battle-seasoned CTO.
+#### Planning
 
-**Stack recommendations** - Tips for starting new projects (Vite+React, uv for Python, etc.)
+**Plan review** - Review agent for plans, automatically executed before exiting plan mode. ([agent](plugins/quick-review/agents/plan-reviewer.md))
+
+**Plan checklist** - Remind Claude to mention in the plan: small commits, a comprehensive TODO list, etc. ([skill](plugins/quick-review/skills/plan-checklist/SKILL.md))
+
+#### Code Quality
+
+**Comment quality check** - Reminds Claude that redundant comments are bad.
+
+**Package management** - Blocks editing package.json/pyproject.toml directly. Enforces `npm install` / `uv add`.
+
+#### Other
+
+**WebFetch tip** - Remind Claude it can download the file instead.
+
+**Brainstorm mode** - Multiple perspectives on a problem before deciding. ([skill](plugins/quick-review/skills/brainstorm/SKILL.md))
+
+**Stack recommendations** - Tips for starting new projects (Vite+React, uv for Python, etc.) ([skill](plugins/quick-review/skills/new-project-good-stacks/SKILL.md))
+
+**Install guidance** - Ensures proper installation methods (CLI over manual edits, official docs over memorized instructions). ([skill](plugins/quick-review/skills/install/SKILL.md))
+
+### plugin-security-reviews
+
+Security review for Claude Code plugins with auto-detection of new/changed plugins.
+
+### google-workspace-connector
+
+Access Google Workspace APIs (Gmail, Drive, Sheets, Docs) via oauth2l + curl. ([skill](plugins/google-workspace-connector/skills/google-workspace-connector/SKILL.md))
 
 ## Requirements
 
