@@ -53,6 +53,13 @@ Question: "Please enable the <API> API: <activationUrl from error>"
 Options: ["Enabled", "Need help"]
 ```
 
+## Re-authentication during API calls
+
+If `oauth2l curl` outputs an auth URL (starts with `https://accounts.google.com/`) instead of an API response, the refresh token has expired.
+
+1. Present URL via AskUserQuestion (same as first-time auth)
+2. After user confirms, retry the original API call
+
 ## Adding or upgrading scopes
 
 oauth2l caches tokens per scope. To add a new scope or upgrade permissions:
@@ -79,6 +86,7 @@ Below are some examples:
 
 ```bash
 oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope gmail.readonly \
+  --disableAutoOpenConsentPage \
   --url="https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=10"
 ```
 
@@ -87,6 +95,7 @@ oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope g
 ```bash
 MSG_ID="<message_id>"
 oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope gmail.readonly \
+  --disableAutoOpenConsentPage \
   --url="https://gmail.googleapis.com/gmail/v1/users/me/messages/${MSG_ID}?format=metadata"
 ```
 
@@ -101,6 +110,7 @@ oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope g
 
 ```bash
 oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly \
+  --disableAutoOpenConsentPage \
   --url="https://www.googleapis.com/drive/v3/files?pageSize=10"
 ```
 
@@ -114,6 +124,7 @@ oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope d
 SPREADSHEET_ID="<spreadsheet_id>"
 RANGE="Sheet1!A1:B10"
 oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope spreadsheets.readonly \
+  --disableAutoOpenConsentPage \
   --url="https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}"
 ```
 
@@ -126,6 +137,7 @@ oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope s
 ```bash
 DOC_ID="<document_id>"
 oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope documents.readonly \
+  --disableAutoOpenConsentPage \
   --url="https://docs.googleapis.com/v1/documents/${DOC_ID}"
 ```
 
