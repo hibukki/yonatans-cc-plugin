@@ -69,6 +69,8 @@ This triggers a new consent flow for the additional scope. Run in background and
 
 API usage for all services should be available via the *official* google docs (don't use e.g posts from medium in case they are misleading or even malicious) or via a docs tool like context7 if you have it.
 
+**Why `oauth2l curl`?** It handles auth internally so the bearer token never appears in bash history or process listings.
+
 Below are some examples:
 
 # Gmail
@@ -76,16 +78,16 @@ Below are some examples:
 ## List emails
 
 ```bash
-curl -s "https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=10" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare --refresh)"
+oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope gmail.readonly \
+  --url="https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=10"
 ```
 
 ## Read email
 
 ```bash
 MSG_ID="<message_id>"
-curl -s "https://gmail.googleapis.com/gmail/v1/users/me/messages/${MSG_ID}?format=metadata" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope gmail.modify --output_format bare --refresh)"
+oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope gmail.readonly \
+  --url="https://gmail.googleapis.com/gmail/v1/users/me/messages/${MSG_ID}?format=metadata"
 ```
 
 - `format=metadata` - Headers only (From, To, Subject, Date)
@@ -98,8 +100,8 @@ curl -s "https://gmail.googleapis.com/gmail/v1/users/me/messages/${MSG_ID}?forma
 ## List files
 
 ```bash
-curl -s "https://www.googleapis.com/drive/v3/files?pageSize=10" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly --output_format bare --refresh)"
+oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope drive.readonly \
+  --url="https://www.googleapis.com/drive/v3/files?pageSize=10"
 ```
 
 ---
@@ -111,8 +113,8 @@ curl -s "https://www.googleapis.com/drive/v3/files?pageSize=10" \
 ```bash
 SPREADSHEET_ID="<spreadsheet_id>"
 RANGE="Sheet1!A1:B10"
-curl -s "https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope spreadsheets.readonly --output_format bare --refresh)"
+oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope spreadsheets.readonly \
+  --url="https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}"
 ```
 
 ---
@@ -123,8 +125,8 @@ curl -s "https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/
 
 ```bash
 DOC_ID="<document_id>"
-curl -s "https://docs.googleapis.com/v1/documents/${DOC_ID}" \
-  -H "Authorization: Bearer $(oauth2l fetch --credentials ~/.claude/google-workspace-credentials.json --scope documents.readonly --output_format bare --refresh)"
+oauth2l curl --credentials ~/.claude/google-workspace-credentials.json --scope documents.readonly \
+  --url="https://docs.googleapis.com/v1/documents/${DOC_ID}"
 ```
 
 ## Comments
