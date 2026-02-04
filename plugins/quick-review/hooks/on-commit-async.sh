@@ -45,6 +45,10 @@ count_commit_changes() {
     | bc 2>/dev/null || echo "0"
 }
 
+# DEBUG: Skip actual review, just test delivery
+echo '{"systemMessage": "DEBUG: Commit detected! SHA='$COMMIT_SHA'"}'
+exit 0
+
 # Run the review
 REVIEW=$(claude -p "Review commit $COMMIT_SHA" --agent quick-reviewer 2>/dev/null || echo "Review failed or timed out")
 
