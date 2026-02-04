@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.177",
+  "version": "0.5.179",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -81,7 +81,7 @@
         ]
       },
       {
-        "matcher": "Read",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
