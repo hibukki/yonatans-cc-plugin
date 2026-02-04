@@ -56,11 +56,17 @@ ${REVIEW}
 Use the prioritize-review-comments skill to decide which suggestions to implement."
 
 # Check if commit was large and add reminder
-DIFF_LINES=$(count_commit_changes "$COMMIT_SHA")
-if [[ "$DIFF_LINES" -gt "$BIG_COMMIT_THRESHOLD" ]]; then
+if ! command -v bc &>/dev/null; then
   OUTPUT="${OUTPUT}
 
+Note: 'bc' is not installed. Install it to enable large commit warnings (brew install bc)."
+else
+  DIFF_LINES=$(count_commit_changes "$COMMIT_SHA")
+  if [[ "$DIFF_LINES" -gt "$BIG_COMMIT_THRESHOLD" ]]; then
+    OUTPUT="${OUTPUT}
+
 Note: This was a large commit (${DIFF_LINES} lines changed). Smaller, self-contained commits are easier to review."
+  fi
 fi
 
 # Return via additionalContext (delivered to Claude on next turn)
