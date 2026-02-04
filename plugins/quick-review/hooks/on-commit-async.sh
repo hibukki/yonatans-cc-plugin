@@ -45,19 +45,25 @@ count_commit_changes() {
     | bc 2>/dev/null || echo "0"
 }
 
-# DEBUG: Skip actual review, just test delivery
-echo '{"systemMessage": "DEBUG: Commit detected! SHA='$COMMIT_SHA'"}'
-exit 0
+# Run the review (capture both stdout and stderr)
+REVIEW_OUTPUT=$(claude -p "Review commit $COMMIT_SHA" --agent quick-reviewer 2>&1)
+REVIEW_EXIT_CODE=$?
 
-# Run the review
-REVIEW=$(claude -p "Review commit $COMMIT_SHA" --agent quick-reviewer 2>/dev/null || echo "Review failed or timed out")
+# Build debug info
+if [[ $REVIEW_EXIT_CODE -ne 0 ]]; then
+  REVIEW="ERROR (exit code $REVIEW_EXIT_CODE): $REVIEW_OUTPUT"
+else
+  REVIEW="$REVIEW_OUTPUT"
+fi
 
 # Build the output message
 OUTPUT="=== Review for commit ${COMMIT_SHA} ===
 
 ${REVIEW}
 
-Use the prioritize-review-comments skill to decide which suggestions to implement."
+Use the prioritize-review-comments skill to decide which suggestions to implement.
+
+[ASYNC REVIEW COMPLETE]"
 
 # Check if commit was large and add reminder
 if ! command -v bc &>/dev/null; then
