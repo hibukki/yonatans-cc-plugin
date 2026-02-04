@@ -69,10 +69,7 @@ Note: This was a large commit (${DIFF_LINES} lines changed). Smaller, self-conta
   fi
 fi
 
-# Return via additionalContext (delivered to Claude on next turn)
+# Return via systemMessage (delivered to Claude on next turn)
 jq -n --arg output "$OUTPUT" '{
-  "hookSpecificOutput": {
-    "hookEventName": "PostToolUse",
-    "additionalContext": $output
-  }
+  "systemMessage": $output
 }'
