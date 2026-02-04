@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.188",
+  "version": "0.5.190",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -74,9 +74,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit-async.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-claude-p-minimal.sh",
             "async": true,
-            "timeout": 300
+            "timeout": 120
           }
         ]
       },
@@ -85,9 +85,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-post-async.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-claude-p-file.sh",
             "async": true,
-            "timeout": 30
+            "timeout": 120
           }
         ]
       },
@@ -96,7 +96,29 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-commit-no-review.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-claude-p-json-format.sh",
+            "async": true,
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-claude-p-stderr-only.sh",
+            "async": true,
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-simple-no-claude.sh",
             "async": true,
             "timeout": 30
           }
