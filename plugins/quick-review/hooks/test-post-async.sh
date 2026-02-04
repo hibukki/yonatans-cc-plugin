@@ -1,6 +1,6 @@
 #!/bin/bash
 # Simple test for PostToolUse async hook delivery
-# Testing: does async need to complete within same turn?
+# CONFIRMED: This works - delivers messages across turns
+# DISABLED: Two async Bash hooks seem to interfere with each other
 
-sleep 10
-echo '{"systemMessage": "DEBUG: 10-second async hook completed"}'
+exit 0  # Disabled to test if on-commit-async works alone
