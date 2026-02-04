@@ -57,8 +57,10 @@ count_commit_changes() {
 }
 
 log "Starting review..."
-# Run the review in isolated subshell to avoid stdout interference with async delivery
-# (Using $() to capture claude -p output breaks async hook message delivery)
+# IMPORTANT: Must use subshell isolation pattern for claude -p in async hooks.
+# The simpler approach DOES NOT WORK - the systemMessage never gets delivered:
+#   REVIEW_OUTPUT=$(claude -p "..." 2>&1)  # <-- BROKEN, don't use
+# Instead, run claude in a subshell with stdout redirected away, write to temp file.
 REVIEW_FILE="/tmp/review-${COMMIT_SHA}-$$.txt"
 (
   exec >/dev/null 2>&1
