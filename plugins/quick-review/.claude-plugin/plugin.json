@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.191",
+  "version": "0.5.192",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -74,42 +74,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-simple-no-claude.sh",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit-async.sh",
             "async": true,
-            "timeout": 30
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-no-claude-just-sleep.sh",
-            "async": true,
-            "timeout": 30
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-claude-p-subshell.sh",
-            "async": true,
-            "timeout": 120
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/test-output-before-claude.sh",
-            "async": true,
-            "timeout": 120
+            "timeout": 300
           }
         ]
       }

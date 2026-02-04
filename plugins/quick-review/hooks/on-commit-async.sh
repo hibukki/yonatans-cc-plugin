@@ -57,9 +57,16 @@ count_commit_changes() {
 }
 
 log "Starting review..."
-# Run the review (capture both stdout and stderr)
-REVIEW_OUTPUT=$(claude -p "Review commit $COMMIT_SHA" --agent quick-reviewer 2>&1)
+# Run the review in isolated subshell to avoid stdout interference with async delivery
+# (Using $() to capture claude -p output breaks async hook message delivery)
+REVIEW_FILE="/tmp/review-${COMMIT_SHA}-$$.txt"
+(
+  exec >/dev/null 2>&1
+  claude -p "Review commit $COMMIT_SHA" --agent quick-reviewer > "$REVIEW_FILE" 2>&1
+)
 REVIEW_EXIT_CODE=$?
+REVIEW_OUTPUT=$(cat "$REVIEW_FILE" 2>/dev/null || echo "NO REVIEW OUTPUT")
+rm -f "$REVIEW_FILE"
 log "Review completed, exit code: $REVIEW_EXIT_CODE, output length: ${#REVIEW_OUTPUT}"
 
 # Build debug info
