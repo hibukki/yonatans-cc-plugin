@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
-source "$SCRIPT_DIR/lib-review.sh"
+source "$SCRIPT_DIR/lib-common.sh"
 require_jq_or_exit
 
 # Read input early so we can pass it to sub-scripts
@@ -26,19 +26,4 @@ EOF
   exit 0
 fi
 
-review_dir=$(get_review_dir "$input")
-
-# Check for completed reviews only
-completed=$(get_completed_reviews "$review_dir")
-
-if [[ -n "$completed" ]]; then
-  escaped=$(echo "$completed" | jq -Rs .)
-  cat <<EOF
-{
-  "decision": "block",
-  "reason": ${escaped}
-}
-EOF
-else
-  echo '{"decision": "approve"}'
-fi
+echo '{"decision": "approve"}'
