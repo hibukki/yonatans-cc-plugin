@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Async hook for git commits
-# Runs in background via Claude Code's native async hook feature
-# Returns review via additionalContext (delivered on next conversation turn)
-
-# Debug logging
-LOG="/tmp/on-commit-async-debug.log"
-log() { echo "$(date +%H:%M:%S) $1" >> "$LOG"; }
-
-log "=== Hook started ==="
+# Sync PostToolUse hook for git commits.
+# Runs claude -p to review the commit and delivers via additionalContext.
+#
+# Why sync instead of async?
+# Claude Code async hooks have a bug where output (systemMessage/additionalContext)
+# is never delivered to the conversation, regardless of format.
+# Tested: systemMessage, hookSpecificOutput.additionalContext, top-level additionalContext.
+# None worked with async:true. All work with sync hooks.
+# Bug report: TODO(link)
 
 SCRIPT_DIR="$(dirname "$0")"
 source "$SCRIPT_DIR/lib-common.sh"
@@ -19,16 +19,12 @@ BIG_COMMIT_THRESHOLD=100  # lines changed
 
 # Read JSON input from stdin
 INPUT=$(cat)
-log "Got input, length: ${#INPUT}"
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
-# Check if this is a git commit command
-log "Command: $COMMAND"
+# Only run on git commit commands
 if ! echo "$COMMAND" | grep -qE '(^|[[:space:]])git[[:space:]].*commit([[:space:]]|$)'; then
-  log "Not a commit, exiting"
   exit 0
 fi
-log "Is a commit!"
 
 # Reset write counter on commit
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
@@ -40,10 +36,8 @@ STDOUT=$(echo "$INPUT" | jq -r '.tool_response.stdout // empty')
 COMMIT_SHA=$(echo "$STDOUT" | grep -oE '\[[a-zA-Z0-9_/-]+ [a-f0-9]+\]' | grep -oE '[a-f0-9]{7,}' | head -1 || true)
 
 if [[ -z "$COMMIT_SHA" ]]; then
-  log "No commit SHA found, exiting"
   exit 0
 fi
-log "Commit SHA: $COMMIT_SHA"
 
 # Count total lines changed (insertions + deletions) in a commit
 count_commit_changes() {
@@ -56,11 +50,7 @@ count_commit_changes() {
     | bc 2>/dev/null || echo "0"
 }
 
-log "Starting review..."
-# IMPORTANT: Must use subshell isolation pattern for claude -p in async hooks.
-# The simpler approach DOES NOT WORK - the systemMessage never gets delivered:
-#   REVIEW_OUTPUT=$(claude -p "..." 2>&1)  # <-- BROKEN, don't use
-# Instead, run claude in a subshell with stdout redirected away, write to temp file.
+# Run review in an isolated subshell to prevent claude stdout from corrupting hook JSON.
 REVIEW_FILE="/tmp/review-${COMMIT_SHA}-$$.txt"
 (
   exec >/dev/null 2>&1
@@ -69,9 +59,7 @@ REVIEW_FILE="/tmp/review-${COMMIT_SHA}-$$.txt"
 REVIEW_EXIT_CODE=$?
 REVIEW_OUTPUT=$(cat "$REVIEW_FILE" 2>/dev/null || echo "NO REVIEW OUTPUT")
 rm -f "$REVIEW_FILE"
-log "Review completed, exit code: $REVIEW_EXIT_CODE, output length: ${#REVIEW_OUTPUT}"
 
-# Build debug info
 if [[ $REVIEW_EXIT_CODE -ne 0 ]]; then
   REVIEW="ERROR (exit code $REVIEW_EXIT_CODE): $REVIEW_OUTPUT"
 else
@@ -83,16 +71,10 @@ OUTPUT="=== Review for commit ${COMMIT_SHA} ===
 
 ${REVIEW}
 
-Use the prioritize-review-comments skill to decide which suggestions to implement.
+Use the prioritize-review-comments skill to decide which suggestions to implement."
 
-[ASYNC REVIEW COMPLETE]"
-
-# Check if commit was large and add reminder
-if ! command -v bc &>/dev/null; then
-  OUTPUT="${OUTPUT}
-
-Note: 'bc' is not installed. Install it to enable large commit warnings (brew install bc)."
-else
+# Large commit warning
+if command -v bc &>/dev/null; then
   DIFF_LINES=$(count_commit_changes "$COMMIT_SHA")
   if [[ "$DIFF_LINES" -gt "$BIG_COMMIT_THRESHOLD" ]]; then
     OUTPUT="${OUTPUT}
@@ -101,13 +83,10 @@ Note: This was a large commit (${DIFF_LINES} lines changed). Smaller, self-conta
   fi
 fi
 
-log "Output length: ${#OUTPUT}"
-log "Generating JSON..."
-
-# DEBUG: test top-level additionalContext for async delivery
-JSON_OUTPUT=$(jq -n --arg ac "[ASYNC-TOP-LEVEL-AC] ${OUTPUT}" '{
-  "additionalContext": $ac
-}')
-log "JSON output length: ${#JSON_OUTPUT}"
-log "=== Hook complete, outputting JSON ==="
-echo "$JSON_OUTPUT"
+# Deliver via hookSpecificOutput.additionalContext (confirmed working for sync PostToolUse)
+jq -n --arg ctx "$OUTPUT" '{
+  "hookSpecificOutput": {
+    "hookEventName": "PostToolUse",
+    "additionalContext": $ctx
+  }
+}'

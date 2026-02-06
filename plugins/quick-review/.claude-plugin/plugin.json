@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.201",
+  "version": "0.5.203",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -74,8 +74,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit-async.sh",
-            "async": true,
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit.sh",
             "timeout": 300
           }
         ]
