@@ -104,16 +104,9 @@ fi
 log "Output length: ${#OUTPUT}"
 log "Generating JSON..."
 
-# DEBUG: test both delivery mechanisms to see which one works
-SM_OUTPUT="[VIA-systemMessage] ${OUTPUT}"
-AC_OUTPUT="[VIA-additionalContext] ${OUTPUT}"
-
-JSON_OUTPUT=$(jq -n --arg sm "$SM_OUTPUT" --arg ac "$AC_OUTPUT" '{
-  "systemMessage": $sm,
-  "hookSpecificOutput": {
-    "hookEventName": "PostToolUse",
-    "additionalContext": $ac
-  }
+# DEBUG: test top-level additionalContext for async delivery
+JSON_OUTPUT=$(jq -n --arg ac "[ASYNC-TOP-LEVEL-AC] ${OUTPUT}" '{
+  "additionalContext": $ac
 }')
 log "JSON output length: ${#JSON_OUTPUT}"
 log "=== Hook complete, outputting JSON ==="

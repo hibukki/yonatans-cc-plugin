@@ -1,6 +1,6 @@
 {
   "name": "quick-review",
-  "version": "0.5.199",
+  "version": "0.5.200",
   "description": "Auto-triggers a quick code review after git commits",
   "hooks": {
     "SessionStart": [
@@ -77,10 +77,6 @@
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/on-commit-async.sh",
             "async": true,
             "timeout": 300
-          },
-          {
-            "type": "command",
-            "command": "echo '{\"systemMessage\": \"[SYNC-TEST-SM] hello from sync PostToolUse Bash hook\", \"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"[SYNC-TEST-AC] hello from sync PostToolUse Bash hook\"}}'"
           }
         ]
       }
