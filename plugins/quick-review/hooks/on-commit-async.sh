@@ -104,9 +104,16 @@ fi
 log "Output length: ${#OUTPUT}"
 log "Generating JSON..."
 
-# Return via systemMessage (delivered to Claude on next turn)
-JSON_OUTPUT=$(jq -n --arg output "$OUTPUT" '{
-  "systemMessage": $output
+# DEBUG: test both delivery mechanisms to see which one works
+SM_OUTPUT="[VIA-systemMessage] ${OUTPUT}"
+AC_OUTPUT="[VIA-additionalContext] ${OUTPUT}"
+
+JSON_OUTPUT=$(jq -n --arg sm "$SM_OUTPUT" --arg ac "$AC_OUTPUT" '{
+  "systemMessage": $sm,
+  "hookSpecificOutput": {
+    "hookEventName": "PostToolUse",
+    "additionalContext": $ac
+  }
 }')
 log "JSON output length: ${#JSON_OUTPUT}"
 log "=== Hook complete, outputting JSON ==="
